@@ -1,0 +1,18 @@
+hash: 9f03315ab2df5a29f334728551e8768111b872e4f52f6b32597dbcb02232678c
+updated: 2018-01-01T20:40:23.836314-06:00
+imports:
+- name: github.com/asaskevich/EventBus
+  version: 9223ecd796146991d8ffc3b822d5aa02f15aee97
+- name: github.com/facchinm/go-serial-native
+  version: af997a46fb5a5ad87469f1dd6a1bb86918f259ba
+- name: github.com/jacobsa/go-serial
+  version: 5786d1b837823f99ac8751a7e40811a546287bf3
+  subpackages:
+  - serial
+- name: go.uber.org/zap
+  version: 35aad584952c3e7020db7b839f6b102de6271f89
+- name: golang.org/x/sys
+  version: 83801418e1b59fb1880e363299581ee543af32ca
+  subpackages:
+  - unix
+testImports: []

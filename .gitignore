@@ -1,0 +1,6 @@
+.idea/
+ibus_raw_send
+ibus_console
+vendor/
+tty1
+tty2
