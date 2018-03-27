@@ -2,7 +2,7 @@ package ibus
 
 func route(p *Packet) {
 	switch p.Destination {
-	case IBUS_DEVICE_CDPLAYER:
+	case DEVICE_CDPLAYER:
 		CdPlayer.Handle(p)
 	}
 }

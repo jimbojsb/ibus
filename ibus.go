@@ -67,14 +67,21 @@ func Run(device string) {
 	}()
 
 	go func() {
-		p := <-WritePackets
-		port.Write(p.asByteSlice())
-		Events.Publish(EVENT_PACKET_SENT, p)
+		for {
+			p := <-WritePackets
+			_, err := port.Write(p.asByteSlice())
+			if err != nil {
+				panic(err)
+			}
+			Events.Publish(EVENT_PACKET_SENT, p)
+		}
 	}()
 
 	go func() {
-		p := <-ReadPackets
-		route(p)
+		for {
+			p := <-ReadPackets
+			route(p)
+		}
 	}()
 
 	wg.Wait()

@@ -7,22 +7,30 @@ type Device_CdPlayer struct {
 
 func (c *Device_CdPlayer) Handle(p *Packet) {
 	switch p.Source {
-	case IBUS_DEVICE_RADIO:
+	case DEVICE_RADIO:
 		if bytes.Equal(p.Message, []byte{0x01}) {
 			emit(EVENT_CDPLAYER_PING)
 		} else if bytes.Equal(p.Message, []byte{0x38, 0x00, 0x00}) {
-			emit(EVENT_CDPLAYER_STATUS_REQUEST)
+			emit(EVENT_CDPLAYER_STATUS)
+		} else if bytes.Equal(p.Message, []byte{0x38, 0x03, 0x00}) {
+			emit(EVENT_CDPLAYER_CONTROL_PLAY)
+		} else if bytes.Equal(p.Message, []byte{0x38, 0x01, 0x00}) {
+			emit(EVENT_CDPLAYER_CONTROL_STOP)
+		} else if bytes.Equal(p.Message, []byte{0x38, 0x0a, 0x00}) {
+			emit(EVENT_CDPLAYER_CONTROL_NEXT_TRACK)
+		} else if bytes.Equal(p.Message, []byte{0x38, 0x0a, 0x01}) {
+			emit(EVENT_CDPLAYER_CONTROL_PREVIOUS_TRACK)
 		}
 	}
 }
 
 func (c *Device_CdPlayer) Announce() {
-	p := NewPacketWithoutChecksum(IBUS_DEVICE_CDPLAYER, IBUS_DEVICE_BROADCAST, []byte{0x02, 0x01})
+	p := NewPacketWithoutChecksum(DEVICE_CDPLAYER, DEVICE_BROADCAST, []byte{0x02, 0x01})
 	WritePackets <- p
 }
 
 func (c *Device_CdPlayer) Pong() {
-	p := NewPacketWithoutChecksum(IBUS_DEVICE_CDPLAYER, IBUS_DEVICE_BROADCAST, []byte{0x02, 0x00})
+	p := NewPacketWithoutChecksum(DEVICE_CDPLAYER, DEVICE_BROADCAST, []byte{0x02, 0x00})
 	WritePackets <- p
 }
 
@@ -35,6 +43,6 @@ func (c *Device_CdPlayer) RespondToStatusRequest(playing bool, disc int, track i
 	}
 	message = append(message, byte(disc))
 	message = append(message, byte(track))
-	p := NewPacketWithoutChecksum(IBUS_DEVICE_CDPLAYER, IBUS_DEVICE_RADIO, message)
+	p := NewPacketWithoutChecksum(DEVICE_CDPLAYER, DEVICE_RADIO, message)
 	WritePackets <- p
 }
